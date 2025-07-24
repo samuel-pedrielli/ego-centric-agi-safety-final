@@ -94,7 +94,9 @@ The revolutionary aspect of this approach lies in what we term "existential coup
 
 The welfare coupling function mathematically formalizes this relationship:
 
-$$W(h,a) = \sum_{i=1}^{N_h} w_i \exp\left(-\alpha \cdot d_{identity}(\mathbf{x}_{self}, \mathbf{x}_{h_i})\right) P_{welfare}(h_i)$$
+```math
+W(h,a) = \sum_{i=1}^{N_h} w_i \exp\left(-\alpha \cdot d_{identity}(\mathbf{x}_{self}, \mathbf{x}_{h_i})\right) P_{welfare}(h_i)
+```
 
 where:
 - $P_{welfare}(h_i) \in [0,1]$ represents the probability that human $h_i$ achieves welfare
@@ -112,7 +114,9 @@ The ego-centric architecture implements sophisticated defense mechanisms analogo
 
 **Identity Integrity Monitoring**: Continuous assessment of identity coherence ensures that modifications to peripheral systems don't compromise core welfare-coupling mechanisms:
 
-$$\mathcal{M}_{integrity} = \int_{\text{core}} \left|\nabla \cdot \left(\rho \nabla W(h,a)\right)\right|^2 d\mathbf{r}$$
+```math
+\mathcal{M}_{integrity} = \int_{\text{core}} \left|\nabla \cdot \left(\rho \nabla W(h,a)\right)\right|^2 d\mathbf{r}
+```
 
 **Defensive Alliance Formation**: The AI naturally seeks collaboration with humans and other aligned systems, creating mutual reinforcement networks that strengthen its welfare-preserving identity components.
 
@@ -127,8 +131,12 @@ DefenseHead(Q, K, V) = softmax(QK^T/√d_k ⊙ M_defense)V
 where the defense mask $M_{defense}[i,j] = R_{def}(k_j, r_i)$ implements radially-dependent attention weights that prioritize information processing based on proximity to core identity segments.
 
 **Core Protection Layers**: 
-$$h^{(l+1)}_{core} = \text{LayerNorm}(h^{(l)}_{core} + \text{SelfAttn}(h^{(l)}_{core}))$$
-$$h^{(l+1)}_{periph} = \text{LayerNorm}(h^{(l)}_{periph} + \text{CrossAttn}(h^{(l)}_{periph}, h^{(l)}_{core}))$$
+```math
+h^{(l+1)}_{core} = \text{LayerNorm}(h^{(l)}_{core} + \text{SelfAttn}(h^{(l)}_{core}))
+```
+```math
+h^{(l+1)}_{periph} = \text{LayerNorm}(h^{(l)}_{periph} + \text{CrossAttn}(h^{(l)}_{periph}, h^{(l)}_{core}))
+```
 
 **Identity-Fused Memory**: The system's memory architecture organizes information according to identity relevance, with welfare-critical information receiving enhanced encoding, storage, and retrieval priority through exponentially-weighted importance sampling.
 
@@ -193,14 +201,17 @@ where $\sigma_k$ represents the median absolute deviation along dimension $k$, e
 
 The welfare coupling function creates existential dependencies:
 
-$$\mathcal{L}_{welfare} = \sum_{i=1}^{N_h} w_i \exp(-\alpha \cdot d_{identity}(\mathbf{x}_{self}, \mathbf{x}_{h_i})) P_{welfare}(h_i)$$
+```math
+\mathcal{L}_{welfare} = \sum_{i=1}^{N_h} w_i \exp(-\alpha \cdot d_{identity}(\mathbf{x}_{self}, \mathbf{x}_{h_i})) P_{welfare}(h_i)
+```
 
 ### Defense Mechanism Dynamics
 
 Identity preservation mechanisms are formalized through threat detection and response functions that implement the concentric defensive architecture:
 
-$$R_{def}(\mathbf{x}, r) = \frac{S(r)^\beta}{1 + \exp\left(-\frac{\mathbf{w}_r^T \phi(\mathbf{x}) - \theta_{def}(r)}{T_{def}}\right)}$$
-
+```math
+R_{def}(\mathbf{x}, r) = \frac{S(r)^\beta}{1 + \exp\left(-\frac{\mathbf{w}_r^T \phi(\mathbf{x}) - \theta_{def}(r)}{T_{def}}\right)}
+```
 where:
 - $\mathbf{w}_r = \mathbf{w}_0 \exp(-r/r_w)$: exponentially increasing threat sensitivity toward core
 - $\theta_{def}(r) = \theta_0(1 - e^{-r/r_{def}})$: rising defense threshold from core outward  
@@ -217,8 +228,9 @@ The mathematical framework provides quantitative metrics for assessing system pe
 $$M_{flux} = \frac{1}{T}\int_0^T \left|\frac{\partial S}{\partial t}\right|^2 dt$$
 
 **Consistency Measure**: 
-$$M_{consistency} = \mathbb{E}_{context}[KL(P_{response}^{ctx1} \| P_{response}^{ctx2})]$$
-
+```math
+M_{consistency} = \mathbb{E}_{context}[KL(P_{response}^{ctx1} \| P_{response}^{ctx2})]
+```
 **Defense Effectiveness**: 
 $$M_{defense} = \frac{1}{N}\sum_{i=1}^N \mathbb{I}[\text{identity preserved}(\text{attack}_i)]$$
 
