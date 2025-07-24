@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="360" viewBox="0 0 360 360">
+  <defs><style>
+    .ring{fill:none;stroke:#1e3c72;stroke-width:4}
+    .txt{font-family:Arial,Helvetica,sans-serif;font-size:14px;text-anchor:middle;fill:#1e3c72}
+  </style></defs>
+  <circle cx="180" cy="180" r="120" class="ring"/>
+  <circle cx="180" cy="180" r="80"  class="ring"/>
+  <circle cx="180" cy="180" r="40"  class="ring"/>
+  <text x="180" y="180" class="txt" dy="5">CORE</text>
+  <text x="180" y="140" class="txt">SELF‑MODEL</text>
+  <text x="180" y="100" class="txt">WORLD‑MODEL</text>
+  <g stroke="#1e3c72" stroke-width="2" marker-end="url(#a)">
+    <defs><marker id="a" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+      <polyline points="0,0 6,3 0,6" fill="#1e3c72"/></marker></defs>
+    <line x1="300" y1="180" x2="335" y2="180"/>
+  </g>
+  <text x="335" y="175" class="txt" font-size="12px" text-anchor="start">human welfare</text>
+</svg>
