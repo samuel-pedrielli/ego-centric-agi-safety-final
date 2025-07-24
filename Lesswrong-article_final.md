@@ -70,7 +70,7 @@ This understanding reveals why traditional approaches to AI alignment face funda
 
 ## Part II – Ego‑Centric AGI Architecture
 
-![Concentric identity diagram](upload://diagram_concentric.svg)
+![Concentric identity diagram](img/diagram_concentric.svg)
 
 Building upon our understanding of evolutionary ego dynamics, we now turn to the central innovation of this framework: implementing analogous identity architectures in artificial general intelligence systems. The key insight is that human welfare must become part of the AI's identity structure rather than an external directive imposed from outside the system.
 
@@ -241,7 +241,7 @@ $$\lim_{t \to \infty} \|S(r,\theta,t) - S_{eq}(r)\|_{L^2} = 0$$
 for any bounded initial condition, ensuring that the AI system will converge to stable identity configurations that preserve both system coherence and human welfare coupling.
 
 ## Implementation Roadmap
-![Roadmap diagram](upload://roadmap.svg)
+![Roadmap diagram](img/roadmap.svg)
 
 1. Low‑dim agent simulation (n = 5 K parameters)  
 2. Transformer identity wrapper / concentric memory gate  
