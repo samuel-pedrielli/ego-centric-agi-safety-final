@@ -252,5 +252,11 @@ for any bounded initial condition, ensuring that the AI system will converge to 
 * Minimal parameter count for stable identity core  
 * Can ego‑centric alignment scale beyond 10¹⁴ tokens?
 
+**Author note — AI assistance**
+Draft segments of this post were generated with large‑language‑model tools
+(Claude 4 and an OpenAI‑powered assistant, “Orazio”) and then extensively
+edited and fact‑checked by the author. Responsibility for all claims and errors
+remains solely with the human author.
+
 Contact: **samuelpedrielli@outlook.it**  
 Full papers & code: <https://samuel-pedrielli.github.io>
