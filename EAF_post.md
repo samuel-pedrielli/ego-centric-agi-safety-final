@@ -153,7 +153,7 @@ I'm happy to share code and implement the minimal experiment with interested res
 
 ### Materials
 
-- **One‑pager:** PDF available on samuel‑pedrielli.github.io
+- **One‑pager:** PDF available on [samuel‑pedrielli.github.io](https://samuel-pedrielli.github.io/)
 - **GitHub repo:** source & updates
 - **Zenodo preprints:** 
   - Philosophical & mathematical foundations — DOI 10.5281/zenodo.15843382
@@ -165,7 +165,7 @@ I'm happy to share code and implement the minimal experiment with interested res
 ### Contact
 
 **Samuel Pedrielli – Independent Researcher**  
-ORCID 0009‑0002‑8388‑6371 • samuelpedrielli@outlook.it • samuel‑pedrielli.github.io
+ORCID 0009‑0002‑8388‑6371 • samuelpedrielli@outlook.it • [samuel‑pedrielli.github.io](https://samuel-pedrielli.github.io/)
 
 ### License
 
