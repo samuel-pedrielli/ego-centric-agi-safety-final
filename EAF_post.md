@@ -6,8 +6,7 @@ I propose a concentric identity‑stability mechanism for AGI: a nested latent s
 
 ---
 
-*(Optional image — double‑arrow coupling diagram)*  
-![Core coupling diagram](drag-your-core-diagram-here.png)
+<img width="360" height="360" alt="image" src="https://github.com/user-attachments/assets/d70e24bd-b0e0-43cd-9490-3db78b49cfab" />
 
 ---
 
