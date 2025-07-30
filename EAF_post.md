@@ -78,8 +78,7 @@ where a_θ is the identity state induced by parameters θ.
 
 ---
 
-*(Optional image — mini roadmap/ablations)*  
-![Minimal roadmap](drag-your-roadmap-here.png)
+<img width="520" height="110" alt="image" src="https://github.com/user-attachments/assets/19d0af22-9f33-45c9-8f97-28d58a17789f" />
 
 ---
 
