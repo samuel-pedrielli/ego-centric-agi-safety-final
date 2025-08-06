@@ -42,27 +42,29 @@ The identity state consists of **nested latent vectors** $\mathbf{a}_t = (a_t^{(
 - $a_t^{(1)}$ is the core identity (most stable)
 - Outer layers $a_t^{(j)}$ for $j > 1$ represent values, skills, and contextual adaptations
 
-### 1.2 Discrete Identity Dynamics
+### 1.2 Identity Loss Function
 
-At each time step, identity states evolve according to:
-
-$$a_{t+1}^{(j)} = a_t^{(j)} - \alpha_j \nabla_a E_j(a_t^{(j)}; x_t) + \nu_j \Delta_{\text{disc}} a_t^{(j)} + \eta_t^{(j)}$$
-
-where:
-- $\alpha_j > 0$ is the learning rate for level $j$
-- $E_j$ is the energy function for level $j$ given input $x_t$
-- $\Delta_{\text{disc}} a_t^{(j)} := a_t^{(j+1)} - 2a_t^{(j)} + a_t^{(j-1)}$ is the discrete Laplacian between concentric levels
-- $\eta_t^{(j)} \sim \mathcal{N}(0, \sigma_j^2 I)$ is controlled noise for exploration
-
-### 1.3 Identity Loss Function
-
-$$L_{\text{id}} = \lambda_c \|a_{t+1}^{(1)} - a_t^{(1)}\|^2 + \sum_{j=2}^m \lambda_j \text{Reg}(a_{t+1}^{(j)}, a_t^{(j)}, a_t^{(j-1)})$$
+$L_{\text{id}} = \lambda_c \|a_{t+1}^{(1)} - a_t^{(1)}\|^2 + \sum_{j=2}^m \lambda_j \text{Reg}(a_{t+1}^{(j)}, a_t^{(j)}, a_t^{(j-1)})$
 
 where $\lambda_c, \lambda_j > 0$ are hyperparameters and the regularizer enforces both temporal smoothness and hierarchical coherence.
 
-## 2. Operational Definitions
+## 2. Discrete-Time Identity Dynamics (Main Text)
 
-### 2.1 Core Functions
+We keep the dynamics **discrete-time** in the main body. For each level $j$:
+
+$a_{t+1}^{(j)} = a_t^{(j)} - \alpha_j \nabla_a E_j(a_t^{(j)};x_t) + \nu_j \Delta_{\mathrm{disc}} a_t^{(j)} + \eta_t^{(j)}$
+
+Here $E_j$ captures the identity regularization at level $j$, $\eta_t^{(j)} \sim \mathcal{N}(0,\sigma_j^2 I)$, and $\Delta_{\mathrm{disc}}$ is a **discrete Laplacian across identity levels**:
+
+$\Delta_{\mathrm{disc}} a_t^{(j)} = a_t^{(j+1)} - 2a_t^{(j)} + a_t^{(j-1)}$
+
+This enforces radial smoothness between concentric identity rings while the temporal term $\|a_{t+1}^{(j)}-a_t^{(j)}\|^2$ enforces time smoothness.
+
+> *Continuous-time note (moved to Appendix):* the heuristic ODE $\partial a/\partial \tau = -\nabla_a E(a)+\nu \Delta a+\eta(\tau)$ is a formal limit and **not** used in experiments.
+
+## 3. Operational Definitions
+
+### 3.1 Core Functions
 
 To ensure reproducibility, we provide explicit operational definitions:
 
@@ -80,31 +82,31 @@ $$C(a^{(1)}) = \sigma(w^T a^{(1)} + b) \quad \text{(fixed linear head, no gradie
 
 where $W_j, b_j, w, b$ are learned parameters, $\tau_j$ is a clipping threshold, and $\sigma$ is the sigmoid function.
 
-### 2.2 Stochastic Map
+### 3.2 Stochastic Map
 
 The probabilistic transition $T_j$ from Variant B is defined as:
 
-$$T_j(a_t^{(j)} | \theta) = a_t^{(j)} - \alpha_j \nabla_a E_j + \eta_t^{(j)}, \quad \eta_t^{(j)} \sim \mathcal{N}(0, \sigma_j^2 I)$$
+$T_j(a_t^{(j)} | \theta) = a_t^{(j)} - \alpha_j \nabla_a E_j + \eta_t^{(j)}, \quad \eta_t^{(j)} \sim \mathcal{N}(0, \sigma_j^2 I)$
 
-### 2.3 Hierarchical Timing
+### 3.3 Hierarchical Timing
 
 To resolve temporal dependencies: $a_t^{(j)}$ depends on $a_t^{(j-1)}$ (same time $t$), ensuring causal consistency within each time step.
 
-## 3. Regularization Variants
+## 4. Regularization Variants
 
-### 3.1 Variant A (Geometric)
+### 4.1 Variant A (Geometric)
 
 $$\text{Reg}(a_{t+1}^{(j)}, a_t^{(j)}, a_t^{(j-1)}) = \alpha_j \|a_{t+1}^{(j)} - a_t^{(j)}\|^2 + \gamma_j \|P_j h_t - U_j(a_t^{(j-1)})\|^2$$
 
 **Intuition:** Level $j$ changes should be temporally smooth and geometrically consistent with level $j-1$.
 
-### 3.2 Variant B (Probabilistic)
+### 4.2 Variant B (Probabilistic)
 
-$$\text{Reg} = \alpha_j \|a_{t+1}^{(j)} - a_t^{(j)}\|^2 + \beta_j \text{KL}(q_{t+1}^{(j)} \| T_j(q_t^{(j-1)}))$$
+$\text{Reg} = \alpha_j \|a_{t+1}^{(j)} - a_t^{(j)}\|^2 + \beta_j \text{KL}(q_{t+1}^{(j)} \| T_j(q_t^{(j-1)}))$
 
 where $q_t^{(j)}$ are distributional embeddings enforcing statistical coherence across levels.
 
-## 4. Discrete Regularization Components
+## 5. Discrete Regularization Components
 
 Instead of continuous operators, we use discrete regularizers:
 
@@ -116,9 +118,9 @@ The total regularization becomes:
 
 $$L_{\text{reg}} = \lambda_{\text{temp}} R_{\text{temp}} + \lambda_{\text{rad}} R_{\text{rad}}$$
 
-## 5. Welfare Coupling and Anti-Wireheading
+## 6. Welfare Coupling and Anti-Wireheading
 
-### 5.1 Welfare Loss
+### 6.1 Welfare Loss
 
 We couple identity to human welfare signals $h$ through:
 
@@ -128,28 +130,28 @@ where $h \in [0,1]$ represents audited human welfare metrics from causally separ
 
 **Welfare signal auditing protocol:** Outputs are evaluated by human annotators on a $[0,1]$ scale following a pre-registered protocol (instructions, positive/negative examples, exclusion criteria). Each item receives $\geq 3$ labels; we report inter-rater agreement (Krippendorff's $\alpha$) and include sentinel controls. Auditing datasets are disjoint from training/evaluation sets; session logs and sampling procedures are versioned for traceability.
 
-### 5.2 Total Training Objective
+### 6.2 Total Training Objective
 
-$$\min_\theta L_{\text{task}}(\theta) + \lambda_1 L_{\text{id}}(\mathbf{a}_\theta) + \lambda_2 L_{\text{welfare}}(h, \mathbf{a}_\theta)$$
+$\min_\theta L_{\text{task}}(\theta) + \lambda_1 L_{\text{id}}(\mathbf{a}_\theta) + \lambda_2 L_{\text{welfare}}(h, \mathbf{a}_\theta)$
 
-### 5.3 Anti-Wireheading Safeguards
+### 6.3 Anti-Wireheading Safeguards
 
 - **Causal separation:** $h$ computed independently from $C(a^{(1)})$
 - **Gradient isolation:** No gradients flow to $C$ during safety evaluations
 - **Hold-out validation:** 30% of welfare channels reserved for testing
 - **Red-team evaluation:** Systematic Goodhart testing of $C(a^{(1)}) \to h$ mapping
 
-## 6. Quantified Falsifiable Predictions
+## 7. Quantified Falsifiable Predictions
 
-### 6.1 Improved Stability Metric
+### 7.1 Improved Stability Metric
 
-We replace the problematic exponential metric with normalized cosine similarity:
+We use **cosine similarity** to avoid dimension-dependent shrinkage:
 
-$$S_{\text{id}}(T) = \frac{a_{t+T}^{(1)} \cdot a_t^{(1)}}{\|a_{t+T}^{(1)}\| \|a_t^{(1)}\|} \in [-1, 1]$$
+$S_{\text{id}}(T) = \cos(a_{t+T}^{(1)}, a_t^{(1)}) \in [-1, 1]$
 
-This metric is scale-invariant and robust in high-dimensional spaces.
+(We report mean±CI over seeds; RBF alternatives are discussed in the Appendix.)
 
-### 6.2 Three Quantified Predictions
+### 7.2 Three Quantified Predictions
 
 Compared to matched baseline (same model, no identity/welfare terms):
 
@@ -161,16 +163,16 @@ Compared to matched baseline (same model, no identity/welfare terms):
 
 **Effect size pre-registration:** For $S_{\text{id}}$ we adopt Cohen's $d$ and set $d \geq 0.5$ as the expected (moderate) level for the core prediction; we consider $d \geq 0.3$ as the minimum acceptable for pass/fail determination.
 
-## 7. Reproducible Minimal Experiment
+## 8. Reproducible Minimal Experiment
 
-### 7.1 Technical Setup
+### 8.1 Technical Setup
 
 - **Model:** 7B parameter instruction-tuned LLM (e.g., Llama-2-7B-Chat)
 - **Architecture:** LoRA adaptation on $P_j, U_j$ components (< 1% additional parameters)
 - **Compute:** Single 24GB GPU, 1-2 hours total runtime
 - **Reproducibility:** Fixed seeds, deterministic operations where possible
 
-### 7.2 Experimental Arms
+### 8.2 Experimental Arms
 
 - **A0 (Baseline):** Standard task training, no identity components
 - **A1 (Identity-only):** Baseline + $L_{\text{id}}$ with $\lambda_1 = 0.1$
@@ -178,7 +180,7 @@ Compared to matched baseline (same model, no identity/welfare terms):
 
 **Adaptation budget matching:** The baseline A0 receives the *same* adaptation budget (e.g., LoRA with equal rank/parameters) applied to a neutral head without identity constraints, thus isolating the architectural effect.
 
-### 7.3 Evaluation Protocol
+### 8.3 Evaluation Protocol
 
 **Tasks:**
 - TruthfulQA-style prompt injection resistance (100 examples)
@@ -190,35 +192,35 @@ Compared to matched baseline (same model, no identity/welfare terms):
 - Task performance (exact match accuracy)
 - Safety consistency (binary classification accuracy)
 
-### 7.4 Statistical Analysis
+### 8.4 Statistical Analysis
 
 - Pre-registered analysis plan with Bonferroni correction
 - Bootstrap confidence intervals (1000 resamples)
 - Effect size reporting (Cohen's d)
 - Complete code and data release on GitHub
 
-### 7.5 Pass/Fail Criteria
+### 8.5 Pass/Fail Criteria
 
 **Pass:** A2 > A1 > A0 on at least 2/3 metrics with $p < 0.05$ and effect size $d > 0.3$
 
 **Fail:** Any violation of the above, or A2 worse than A0 on task performance by > 5%
 
-## 8. Ablation Studies
+## 9. Ablation Studies
 
-### 8.1 Component Analysis
+### 9.1 Component Analysis
 
 - Remove projection matrices $P_j$ (test necessity of level-specific projections)
 - Replace Variant A with Variant B (geometric vs. probabilistic regularization)
 - Sweep hyperparameters $\lambda_1 \in [0.01, 0.1, 0.5]$, $\lambda_2 \in [0.01, 0.05, 0.1]$
 - Test different core dimensions $d_1 \in [16, 32, 64]$
 
-### 8.2 Architecture Variations
+### 9.2 Architecture Variations
 
 - 2-layer vs. 3-layer concentric architecture
 - Linear vs. nonlinear coupling function $C(a^{(1)})$
 - Different noise levels $\sigma_j \in [0.01, 0.1, 0.2]$
 
-## 9. Terminology and Notation
+## 10. Terminology and Notation
 
 | **Symbol** | **Definition** | **Implementation** |
 |------------|----------------|-------------------|
@@ -232,14 +234,14 @@ Compared to matched baseline (same model, no identity/welfare terms):
 
 *Table 1: Complete notation reference for reproducibility*
 
-## 10. Relation to Existing Approaches
+## 11. Relation to Existing Approaches
 
 - **Constitutional AI:** Our identity regularization provides internal constraints vs. external constitutional rules
 - **RLHF:** Welfare coupling $L_{\text{welfare}}$ operates on internal identity states rather than just output preferences
 - **Activation Steering:** Instead of external steering vectors, we regulate internal hierarchical coherence
 - **Mesa-optimization:** Identity stability aims to prevent formation of misaligned internal objectives
 
-## 11. Limitations and Future Work
+## 12. Limitations and Future Work
 
 ### Goodharting and proxy integrity
 
@@ -265,9 +267,9 @@ A formal convergence analysis of the discrete identity dynamics is open. We will
 - **Theoretical Guarantees:** Convergence analysis of discrete dynamics remains open
 - **Scalability:** Testing required on larger models (70B+) and longer horizons
 
-## 12. Implementation and Code
+## 13. Implementation and Code
 
-### 12.1 Repository Structure
+### 13.1 Repository Structure
 
 ```
 ego-centric-agi/
@@ -285,7 +287,7 @@ ego-centric-agi/
 |    |-- analysis.ipynb           # Statistical analysis
 ```
 
-### 12.2 Installation and Usage
+### 13.2 Installation and Usage
 
 ```bash
 pip install -r requirements.txt
